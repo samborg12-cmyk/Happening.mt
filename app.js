@@ -28,7 +28,6 @@
   }
 
   function cacheElements() {
-    els.emptyState = document.getElementById("empty-state");
     els.overlay = document.getElementById("overlay");
     els.sidebar = document.getElementById("sidebar");
     els.sidebarClose = document.getElementById("sidebar-close");
@@ -57,7 +56,6 @@
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
 
-    // Clicking the map (not a pin) closes the sidebar.
     map.on("click", closeSidebar);
   }
 
@@ -85,20 +83,10 @@
   }
 
   function renderEvents(events) {
-    if (!events.length) {
-      els.emptyState.hidden = false;
-      return;
-    }
-    els.emptyState.hidden = true;
-
     events.forEach(function (event) {
       addPin(event);
     });
   }
-
-  // ----------------------------------------------------------
-  // Pins
-  // ----------------------------------------------------------
 
   function addPin(event) {
     if (typeof event.lat !== "number" || typeof event.lng !== "number") return;
@@ -114,7 +102,7 @@
     var marker = L.marker([event.lat, event.lng], { icon: icon }).addTo(map);
 
     marker.on("click", function (e) {
-      L.DomEvent.stopPropagation(e); // don't let the map-click handler close it again
+      L.DomEvent.stopPropagation(e);
       openSidebar(event);
     });
 
@@ -147,10 +135,6 @@
   function startOfDay(date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
-
-  // ----------------------------------------------------------
-  // Sidebar
-  // ----------------------------------------------------------
 
   function openSidebar(event) {
     els.sbName.textContent = event.name || "Untitled event";
@@ -246,3 +230,5 @@
     return startLabel + " – " + endLabel + ", " + year;
   }
 })();
+
+
