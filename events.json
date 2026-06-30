@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "name": "Farsons Beer Festival",
+    "dates": { "start": "2026-07-23", "end": "2026-08-01" },
+    "type": "Beer Fest",
+    "editorScore": "B",
+    "hypeScore": "A",
+    "description": "Malta's biggest beer festival — 10 days of craft beer, live music across 4 stages, food, and summer vibes at Ta' Qali. Featuring Cisk, Blue Label, Guinness, and guest brews.",
+    "price": "Free",
+    "transport": "Multiple bus routes to Ta' Qali National Park",
+    "extras": "Main stage acts typically kick off around 9:30 – 9:45pm. 4 stages: Main Stage, Rock Stage, Casa Electronica, Craft Beer Area.",
+    "photos": [],
+    "lat": 35.8867,
+    "lng": 14.4167
+  },
+  {
+    "id": 2,
+    "name": "Balzan Festa — The Annunciation of Mary",
+    "dates": { "start": "2026-07-06", "end": "2026-07-12" },
+    "type": "Festa",
+    "editorScore": "AA",
+    "hypeScore": "CC",
+    "description": "Balzan's annual village feast celebrating the Annunciation of Mary. A week of street decorations, band marches, and fireworks leading up to the Sunday procession.",
+    "price": "Free",
+    "transport": "Bus routes through Balzan — check Tallinja app for schedules",
+    "extras": "Friday: medium fireworks display. Saturday evening: main aerial show + ground fireworks around 11pm. Sunday: procession and final aerial display.",
+    "photos": [],
+    "lat": 35.8977,
+    "lng": 14.4531
+  },
+  {
+    "id": 3,
+    "name": "Lija Festa — Christ Our Saviour",
+    "dates": { "start": "2026-08-01", "end": "2026-08-06" },
+    "type": "Festa",
+    "editorScore": "A",
+    "hypeScore": "A",
+    "description": "One of Malta's most spectacular festas. Lija is legendary for its fireworks — the aerial displays are considered among the best on the island.",
+    "price": "Free",
+    "transport": "Bus routes through Lija — check Tallinja app for schedules",
+    "extras": "Famous for aerial firework displays — one of Malta's top firework festas. Ground fireworks typically around 11pm on the eve of the feast.",
+    "photos": [],
+    "lat": 35.8989,
+    "lng": 14.4444
+  }
+]
+

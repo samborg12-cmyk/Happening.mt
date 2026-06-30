@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Happening — Live Event Map for Malta</title>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+  crossorigin=""/>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="app-header__mark" aria-hidden="true"></div>
+    <h1 class="app-header__title">Happening</h1>
+    <p class="app-header__subtitle">What's on, across Malta, right now</p>
+  </header>
+
+  <div id="map" role="application" aria-label="Map of events in Malta"></div>
+
+  <div id="empty-state" class="empty-state" hidden>
+    <div class="empty-state__card">
+      <p class="empty-state__title">No events yet</p>
+      <p class="empty-state__body">Check back soon — Malta's calendar is about to fill up.</p>
+    </div>
+  </div>
+
+  <div id="overlay" class="overlay"></div>
+
+  <aside id="sidebar" class="sidebar" aria-hidden="true">
+    <button id="sidebar-close" class="sidebar__close" aria-label="Close event details">&times;</button>
+
+    <div class="sidebar__content">
+      <div class="sidebar__accent"></div>
+
+      <h2 id="sb-name" class="sidebar__name"></h2>
+      <span id="sb-type" class="badge badge--type"></span>
+
+      <p id="sb-dates" class="sidebar__dates"></p>
+
+      <div class="score-row">
+        <div class="score-card">
+          <span class="score-card__label">Editor</span>
+          <span id="sb-editor-score" class="score-card__value"></span>
+        </div>
+        <div class="score-card">
+          <span class="score-card__label">Hype</span>
+          <span id="sb-hype-score" class="score-card__value"></span>
+        </div>
+      </div>
+
+      <p id="sb-description" class="sidebar__description"></p>
+
+      <section class="sidebar__section">
+        <h3 class="sidebar__section-title">Entry price</h3>
+        <p id="sb-price" class="sidebar__section-body"></p>
+      </section>
+
+      <section class="sidebar__section">
+        <h3 class="sidebar__section-title">How to get there</h3>
+        <p id="sb-transport" class="sidebar__section-body"></p>
+      </section>
+
+      <section class="sidebar__section">
+        <h3 class="sidebar__section-title">Extra info</h3>
+        <p id="sb-extras" class="sidebar__section-body"></p>
+      </section>
+
+      <section id="sb-photos-section" class="sidebar__section" hidden>
+        <h3 class="sidebar__section-title">Past photos</h3>
+        <div id="sb-photos" class="photo-scroll"></div>
+      </section>
+    </div>
+  </aside>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+  <script src="app.js"></script>
+</body>
+</html>
