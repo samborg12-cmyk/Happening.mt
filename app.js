@@ -50,10 +50,10 @@
       zoomControl: true,
     }).setView(MALTA_CENTER, DEFAULT_ZOOM);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
       maxZoom: 19,
       attribution:
-        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
     }).addTo(map);
 
     map.on("click", closeSidebar);
@@ -95,8 +95,8 @@
     var icon = L.divIcon({
       className: "",
       html: '<div class="pin pin--' + status + '"></div>',
-      iconSize: [22, 22],
-      iconAnchor: [11, 11],
+      iconSize: [32, 32],
+      iconAnchor: [16, 16],
     });
 
     var marker = L.marker([event.lat, event.lng], { icon: icon }).addTo(map);
