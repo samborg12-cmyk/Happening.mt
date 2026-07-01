@@ -1,17 +1,15 @@
 /* ============================================================
    Happening — design tokens
-   Palette pulled from Malta itself: limestone towns, festa
-   bunting, deep harbour blue, and the gold of village feasts.
    ============================================================ */
 
 :root {
-  --color-bg: #F4EFE6;          /* limestone */
-  --color-ink: #1C1B19;         /* dark stone */
+  --color-bg: #F4EFE6;
+  --color-ink: #1C1B19;
   --color-ink-soft: #635C4F;
-  --color-sea: #1B4965;         /* harbour blue */
+  --color-sea: #1B4965;
   --color-sea-deep: #0F2E40;
-  --color-terracotta: #C1440E;  /* festa red */
-  --color-gold: #D4A017;        /* feast gold */
+  --color-terracotta: #C1440E;
+  --color-gold: #D4A017;
   --color-white: #FFFFFF;
   --color-grey: #9C9690;
   --color-grey-light: #E4DFD4;
@@ -30,6 +28,8 @@
 
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
+
+  --list-width: 320px;
 }
 
 * {
@@ -48,13 +48,13 @@ html, body {
 }
 
 /* ============================================================
-   Header — small floating mark, top-left, never fights the map
+   Header
    ============================================================ */
 
 .app-header {
   position: fixed;
   top: 16px;
-  left: 16px;
+  left: calc(var(--list-width) + 16px);
   z-index: 500;
   display: flex;
   align-items: baseline;
@@ -66,6 +66,7 @@ html, body {
   box-shadow: var(--shadow-soft);
   pointer-events: none;
   max-width: calc(100vw - 32px);
+  transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .app-header__mark {
@@ -96,6 +97,188 @@ html, body {
   .app-header__subtitle {
     display: inline;
   }
+}
+
+/* ============================================================
+   List toggle button (mobile)
+   ============================================================ */
+
+.list-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 800;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.list-toggle__icon {
+  font-size: 1.1rem;
+}
+
+.list-toggle__count {
+  background: var(--color-terracotta);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 999px;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ============================================================
+   Event list (left sidebar)
+   ============================================================ */
+
+.event-list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--list-width);
+  height: 100%;
+  background: var(--color-white);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 20px rgba(15, 26, 33, 0.1);
+  transform: translateX(0);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.event-list:not(.is-open) {
+  transform: translateX(-100%);
+}
+
+.event-list__header {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--color-grey-light);
+  flex-shrink: 0;
+}
+
+.event-list__title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+
+.event-list__items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.event-list__divider {
+  padding: 14px 20px 6px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-grey);
+}
+
+/* ---- list items ---- */
+
+.event-list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-sans);
+  transition: background 0.12s ease;
+}
+
+.event-list-item:hover {
+  background: var(--color-bg);
+}
+
+.event-list-item--past {
+  opacity: 0.45;
+}
+
+.event-list-item__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot--today {
+  background: var(--color-terracotta);
+  box-shadow: 0 0 0 3px rgba(193, 68, 14, 0.2);
+}
+
+.dot--soon {
+  background: #E0801A;
+}
+
+.dot--future {
+  background: var(--color-sea);
+}
+
+.dot--past {
+  background: var(--color-grey);
+}
+
+.event-list-item__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.event-list-item__name {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-list-item__meta {
+  font-size: 0.72rem;
+  color: var(--color-ink-soft);
+  font-weight: 500;
+}
+
+.event-list-item__type {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  width: fit-content;
+  margin-top: 2px;
+}
+
+.event-list-item__arrow {
+  color: var(--color-grey);
+  font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 /* ============================================================
@@ -139,7 +322,7 @@ html, body {
 }
 
 .pin--soon {
-  background: #E0801A; /* orange */
+  background: #E0801A;
 }
 
 .pin--future {
@@ -164,7 +347,7 @@ html, body {
 }
 
 /* ============================================================
-   Overlay (click-outside-to-close)
+   Overlay
    ============================================================ */
 
 .overlay {
@@ -182,7 +365,7 @@ html, body {
 }
 
 /* ============================================================
-   Sidebar / event detail panel
+   Sidebar (event detail)
    ============================================================ */
 
 .sidebar {
@@ -366,7 +549,7 @@ html, body {
 }
 
 /* ============================================================
-   Leaflet popup reset (we don't use popups, but keep tidy)
+   Leaflet overrides
    ============================================================ */
 
 .leaflet-div-icon {
@@ -375,18 +558,29 @@ html, body {
 }
 
 /* ============================================================
-   Mobile — sidebar becomes a bottom sheet
+   Mobile
    ============================================================ */
 
 @media (max-width: 640px) {
   .app-header {
+    left: 60px;
     top: 12px;
-    left: 12px;
     padding: 8px 14px;
   }
 
   .app-header__title {
     font-size: 1rem;
+  }
+
+  .list-toggle {
+    display: flex;
+  }
+
+  .event-list {
+    width: 85vw;
+    max-width: 340px;
+    z-index: 900;
+    box-shadow: 8px 0 30px rgba(15, 26, 33, 0.2);
   }
 
   .sidebar {
