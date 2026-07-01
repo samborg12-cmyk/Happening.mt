@@ -1,0 +1,22 @@
+{
+  "name": "happening-mt",
+  "version": "1.0.0",
+  "description": "Live Event Map for Malta - A plain HTML/CSS/JavaScript application",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "serve": "python3 -m http.server 8000"
+  },
+  "keywords": [
+    "malta",
+    "events",
+    "map",
+    "leaflet"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {},
+  "notes": {
+    "analytics": "Vercel Web Analytics is configured via script tags in index.html. No npm package installation required for static HTML sites."
+  }
+}
