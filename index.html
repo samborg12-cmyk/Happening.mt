@@ -11,14 +11,25 @@
 
 <link rel="stylesheet" href="style.css">
 </head>
-<script defer src="/_vercel/insights/script.js"></script>
-  <body>
+<body>
 
   <header class="app-header">
     <div class="app-header__mark" aria-hidden="true"></div>
     <h1 class="app-header__title">Happening</h1>
     <p class="app-header__subtitle">What's on, across Malta, right now</p>
   </header>
+
+  <button id="list-toggle" class="list-toggle" aria-label="Toggle event list">
+    <span class="list-toggle__icon">☰</span>
+    <span class="list-toggle__count" id="list-count">0</span>
+  </button>
+
+  <aside id="event-list" class="event-list">
+    <div class="event-list__header">
+      <h2 class="event-list__title">What's Coming</h2>
+    </div>
+    <div id="event-list-items" class="event-list__items"></div>
+  </aside>
 
   <div id="map" role="application" aria-label="Map of events in Malta"></div>
 
@@ -73,6 +84,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+  <script defer src="/_vercel/insights/script.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
