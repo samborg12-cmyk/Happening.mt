@@ -15,6 +15,7 @@
   var map;
   var markers = [];
   var activeMarker = null;
+  var listOpen = false;
 
   var els = {};
 
@@ -31,6 +32,10 @@
     els.overlay = document.getElementById("overlay");
     els.sidebar = document.getElementById("sidebar");
     els.sidebarClose = document.getElementById("sidebar-close");
+    els.eventList = document.getElementById("event-list");
+    els.eventListItems = document.getElementById("event-list-items");
+    els.listToggle = document.getElementById("list-toggle");
+    els.listCount = document.getElementById("list-count");
 
     els.sbName = document.getElementById("sb-name");
     els.sbType = document.getElementById("sb-type");
@@ -62,6 +67,7 @@
   function bindGlobalEvents() {
     els.sidebarClose.addEventListener("click", closeSidebar);
     els.overlay.addEventListener("click", closeSidebar);
+    els.listToggle.addEventListener("click", toggleEventList);
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape") closeSidebar();
     });
@@ -74,13 +80,20 @@
         return res.json();
       })
       .then(function (events) {
-        renderEvents(Array.isArray(events) ? events : []);
+        var eventArr = Array.isArray(events) ? events : [];
+        renderEvents(eventArr);
+        renderEventList(eventArr);
       })
       .catch(function (err) {
         console.error("Happening: failed to load events", err);
         renderEvents([]);
+        renderEventList([]);
       });
   }
+
+  // ----------------------------------------------------------
+  // Pins
+  // ----------------------------------------------------------
 
   function renderEvents(events) {
     events.forEach(function (event) {
@@ -135,6 +148,141 @@
   function startOfDay(date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
+
+  // ----------------------------------------------------------
+  // Event List (calendar sidebar)
+  // ----------------------------------------------------------
+
+  function renderEventList(events) {
+    els.eventListItems.innerHTML = "";
+
+    var today = startOfDay(new Date());
+
+    var upcoming = events.filter(function (e) {
+      var end = parseDate(e.dates && e.dates.end);
+      return end && end >= today;
+    }).sort(function (a, b) {
+      return parseDate(a.dates.start) - parseDate(b.dates.start);
+    });
+
+    var past = events.filter(function (e) {
+      var end = parseDate(e.dates && e.dates.end);
+      return end && end < today;
+    }).sort(function (a, b) {
+      return parseDate(b.dates.start) - parseDate(a.dates.start);
+    });
+
+    els.listCount.textContent = upcoming.length;
+
+    upcoming.forEach(function (event) {
+      els.eventListItems.appendChild(createListItem(event));
+    });
+
+    if (past.length) {
+      var divider = document.createElement("div");
+      divider.className = "event-list__divider";
+      divider.textContent = "Past";
+      els.eventListItems.appendChild(divider);
+
+      past.forEach(function (event) {
+        els.eventListItems.appendChild(createListItem(event));
+      });
+    }
+
+    // Show list by default on desktop
+    if (window.innerWidth > 640) {
+      els.eventList.classList.add("is-open");
+      listOpen = true;
+    }
+  }
+
+  function createListItem(event) {
+    var status = getEventStatus(event);
+
+    var item = document.createElement("button");
+    item.className = "event-list-item event-list-item--" + status;
+
+    var dot = document.createElement("span");
+    dot.className = "event-list-item__dot dot--" + status;
+
+    var info = document.createElement("div");
+    info.className = "event-list-item__info";
+
+    var name = document.createElement("span");
+    name.className = "event-list-item__name";
+    name.textContent = event.name || "Untitled";
+
+    var meta = document.createElement("span");
+    meta.className = "event-list-item__meta";
+
+    var dateStr = formatDateRange(
+      event.dates && event.dates.start,
+      event.dates && event.dates.end
+    );
+    var daysLabel = getDaysLabel(event);
+    meta.textContent = dateStr + (daysLabel ? "  ·  " + daysLabel : "");
+
+    var typeTag = document.createElement("span");
+    typeTag.className = "event-list-item__type type-" + slugifyType(event.type);
+    typeTag.textContent = event.type || "Other";
+
+    var arrow = document.createElement("span");
+    arrow.className = "event-list-item__arrow";
+    arrow.textContent = "→";
+
+    info.appendChild(name);
+    info.appendChild(meta);
+    info.appendChild(typeTag);
+
+    item.appendChild(dot);
+    item.appendChild(info);
+    item.appendChild(arrow);
+
+    item.addEventListener("click", function () {
+      if (event.lat && event.lng) {
+        map.setView([event.lat, event.lng], 14, { animate: true });
+      }
+      openSidebar(event);
+
+      // Close list on mobile
+      if (window.innerWidth <= 640) {
+        els.eventList.classList.remove("is-open");
+        listOpen = false;
+      }
+    });
+
+    return item;
+  }
+
+  function getDaysLabel(event) {
+    var today = startOfDay(new Date());
+    var start = parseDate(event.dates && event.dates.start);
+    var end = parseDate(event.dates && event.dates.end);
+
+    if (!start || !end) return "";
+
+    if (today >= start && today <= end) return "Happening now";
+    if (today > end) return "Ended";
+
+    var days = Math.round((start - today) / DAY_MS);
+    if (days === 1) return "Tomorrow";
+    if (days <= 7) return "In " + days + " days";
+    if (days <= 14) return "Next week";
+    return "";
+  }
+
+  function toggleEventList() {
+    listOpen = !listOpen;
+    if (listOpen) {
+      els.eventList.classList.add("is-open");
+    } else {
+      els.eventList.classList.remove("is-open");
+    }
+  }
+
+  // ----------------------------------------------------------
+  // Sidebar (event detail)
+  // ----------------------------------------------------------
 
   function openSidebar(event) {
     els.sbName.textContent = event.name || "Untitled event";
@@ -230,4 +378,3 @@
     return startLabel + " – " + endLabel + ", " + year;
   }
 })();
-
